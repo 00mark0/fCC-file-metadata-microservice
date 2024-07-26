@@ -1,0 +1,21 @@
+const express = require("express");
+const multer = require("multer");
+
+const router = express.Router();
+
+const upload = multer({ dest: "uploads/" });
+
+router.post("/fileanalyse", upload.single("upfile"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: "No file uploaded" });
+  }
+
+  const { originalname, mimetype, size } = req.file;
+  res.json({
+    name: originalname,
+    type: mimetype,
+    size: size,
+  });
+});
+
+module.exports = router;
